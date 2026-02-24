@@ -116,7 +116,7 @@ fun WeatherScreen(
                                 color = Color.White
                             )
                             Text(
-                                text = "Hissedilen: ${
+                                text = "Feeling: ${
                                     uiState.weatherData.current?.apparentTemperature?.let {
                                         "%.1f".format(
                                             it
