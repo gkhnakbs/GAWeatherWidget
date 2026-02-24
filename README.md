@@ -10,6 +10,7 @@
   ![Kotlin](https://img.shields.io/badge/Kotlin-2.0-7F52FF?logo=kotlin&logoColor=white)
   ![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-UI-4285F4?logo=jetpackcompose&logoColor=white)
   ![Jetpack Glance](https://img.shields.io/badge/Jetpack%20Glance-Widget-FF6F00?logo=android&logoColor=white)
+  ![License](https://img.shields.io/badge/License-MIT-yellow)
 
 </div>
 
@@ -62,6 +63,10 @@ git clone <repo-url>
 cd WeatherAppWithWidget
 ./gradlew installDebug
 ```
+
+## 📄 Lisans
+
+Bu proje [MIT Lisansı](LICENSE) ile lisanslanmıştır.
 
 ---
 
