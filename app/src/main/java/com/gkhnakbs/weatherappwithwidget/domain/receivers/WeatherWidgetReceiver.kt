@@ -20,17 +20,16 @@ class WeatherWidgetReceiver : GlanceAppWidgetReceiver() {
 
     override val glanceAppWidget: GlanceAppWidget = WeatherWidget()
 
+    private val periodicWorkerTAG = "WeatherWidgetUpdateWork"
 
     override fun onEnabled(context: Context) {
         super.onEnabled(context)
-        // Widget eklendiğinde periyodik güncellemeyi başlat
         val workRequest = PeriodicWorkRequestBuilder<UpdateWeatherWorker>(
-            15, TimeUnit.MINUTES,// En az 15 dakika
-            1, TimeUnit.HOURS
+            45, TimeUnit.MINUTES,// En az 15 dakika
         ).build()
 
         WorkManager.getInstance(context).enqueueUniquePeriodicWork(
-            "WeatherWidgetUpdateWork",
+            periodicWorkerTAG,
             ExistingPeriodicWorkPolicy.KEEP,
             workRequest
         )
@@ -38,7 +37,6 @@ class WeatherWidgetReceiver : GlanceAppWidgetReceiver() {
 
     override fun onDisabled(context: Context) {
         super.onDisabled(context)
-        // Son widget kaldırıldığında işi iptal et
-        WorkManager.getInstance(context).cancelUniqueWork("WeatherWidgetUpdateWork")
+        WorkManager.getInstance(context).cancelUniqueWork(periodicWorkerTAG)
     }
 }

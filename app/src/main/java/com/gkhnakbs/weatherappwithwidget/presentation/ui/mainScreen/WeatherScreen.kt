@@ -75,13 +75,12 @@ fun WeatherScreen(
                         verticalArrangement = Arrangement.spacedBy(24.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        // Konum Bilgisi
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
                             modifier = Modifier.padding(top = 32.dp)
                         ) {
                             Text(
-                                text = uiState.weatherData.timezone ?: "Bilinmeyen Konum",
+                                text = uiState.weatherData.timezone ?: "Unknown Location",
                                 fontSize = 28.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = Color.White
@@ -100,7 +99,6 @@ fun WeatherScreen(
                             )
                         }
 
-                        // Ana Sıcaklık
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
                             modifier = Modifier.padding(vertical = 16.dp)
@@ -131,7 +129,6 @@ fun WeatherScreen(
                             )
                         }
 
-                        // Detay Bilgileri
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -143,38 +140,36 @@ fun WeatherScreen(
                                 horizontalArrangement = Arrangement.SpaceEvenly
                             ) {
                                 WeatherInfoItem(
-                                    label = "Nem",
+                                    label = "Humidity",
                                     value = "${uiState.weatherData.current?.relativeHumidity2m ?: "--"}%",
                                     modifier = Modifier.weight(1f)
                                 )
                                 WeatherInfoItem(
-                                    label = "Yağmur",
+                                    label = "Rain",
                                     value = "${uiState.weatherData.current?.rain ?: "0"} mm",
                                     modifier = Modifier.weight(1f)
                                 )
                             }
 
-                            // Zaman Dilimi Bilgisi
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.SpaceEvenly
                             ) {
                                 WeatherInfoItem(
-                                    label = "Zaman Dilimi",
+                                    label = "Time Period",
                                     value = uiState.weatherData.timezoneAbbreviation ?: "--",
                                     modifier = Modifier.weight(1f)
                                 )
                                 WeatherInfoItem(
-                                    label = "Yükseklik",
+                                    label = "Height",
                                     value = "${uiState.weatherData.elevation?.let { "%.0f".format(it) } ?: "--"} m",
                                     modifier = Modifier.weight(1f)
                                 )
                             }
                         }
 
-                        // Son Güncelleme
                         Text(
-                            text = "Son Güncelleme: ${uiState.weatherData.current?.time ?: "--"}",
+                            text = "Last Update: ${uiState.weatherData.current?.time ?: "--"}",
                             fontSize = 12.sp,
                             color = Color.White.copy(alpha = 0.6f),
                             modifier = Modifier.padding(top = 16.dp)
@@ -194,7 +189,7 @@ fun WeatherScreen(
                             modifier = Modifier.padding(16.dp)
                         )
                         Button(onClick = { viewModel.fetchWeather() }) {
-                            Text("Tekrar Dene")
+                            Text("Try again")
                         }
                     }
                 }

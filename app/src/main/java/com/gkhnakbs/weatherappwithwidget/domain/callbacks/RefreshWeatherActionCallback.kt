@@ -27,58 +27,50 @@ class RefreshWeatherActionCallback : ActionCallback {
         glanceId: GlanceId,
         parameters: ActionParameters
     ) {
-        // 1. Yükleniyor durumunu ayarla
         updateAppWidgetState(context, WeatherWidgetStateDefinition, glanceId) { prefs ->
             prefs.toMutablePreferences().apply {
                 this[WeatherWidgetState.isLoading] = true
             }
         }
-        // Widget'ı "Yükleniyor" UI'ı için hemen güncelle
         WeatherWidget().update(context, glanceId)
 
-        // 2. Hilt EntryPoint üzerinden Repository'ye eriş
         val hiltEntryPoint = EntryPointAccessors.fromApplication(
             context.applicationContext,
             WeatherRepositoryEntryPoint::class.java
         )
         val repository = hiltEntryPoint.weatherRepository()
 
-        // 3. API'den veriyi çek
         try {
-            // Ankara koordinatları
             val data = repository.getWeatherData(39.960108, 32.791761)
 
-            // 4. Gelen veriyi widget state'ine kaydet
             data?.let {
                 updateAppWidgetState(context, WeatherWidgetStateDefinition, glanceId) { prefs ->
                     prefs.toMutablePreferences().apply {
                         this[WeatherWidgetState.isLoading] = false
                         this[WeatherWidgetState.temperature] = "${data.current?.temperature2m}${data.currentUnits?.temperature2m ?: "°C"}"
                         this[WeatherWidgetState.humidity] = "${data.current?.relativeHumidity2m}${data.currentUnits?.relativeHumidity2m ?: "%"}"
-                        this[WeatherWidgetState.location] = data.timezone?.split("/")?.lastOrNull() ?: "Bilinmeyen"
-                        this[WeatherWidgetState.lastUpdate] = "Son Güncelleme: ${getCurrentTime()}"
+                        this[WeatherWidgetState.location] = data.timezone?.split("/")?.lastOrNull() ?: "Unknown"
+                        this[WeatherWidgetState.lastUpdate] = "Last Updated: ${getCurrentTime()}"
                         this[WeatherWidgetState.apparentTemperature] =
-                            "Hissedilen: ${data.current?.apparentTemperature}${data.currentUnits?.apparentTemperature ?: "°C"}"
+                            "Feeling: ${data.current?.apparentTemperature}${data.currentUnits?.apparentTemperature ?: "°C"}"
                     }
                 }
             }
 
         } catch (e: Exception) {
-            // 5. Hata durumunda state'i güncelle
             updateAppWidgetState(context, WeatherWidgetStateDefinition, glanceId) { prefs ->
                 prefs.toMutablePreferences().apply {
                     this[WeatherWidgetState.isLoading] = false
-                    this[WeatherWidgetState.temperature] = "Hata!"
-                    this[WeatherWidgetState.humidity] = "Yeniden deneyin"
-                    this[WeatherWidgetState.lastUpdate] = "Son Güncelleme: ${getCurrentTime()}"
+                    this[WeatherWidgetState.temperature] = "Error!"
+                    this[WeatherWidgetState.humidity] = "Try again"
+                    this[WeatherWidgetState.lastUpdate] = "Last Updated: ${getCurrentTime()}"
                     this[WeatherWidgetState.apparentTemperature] = ""
-                    this[WeatherWidgetState.location] = "Bağlantı Hatası"
+                    this[WeatherWidgetState.location] = "Connection Error"
                 }
             }
             Log.e("WeatherWidgetRefresh","Error: ${e.message}", e)
         }
         finally {
-            // 6. Widget UI'ını son veriyle güncelle
             WeatherWidget().update(context, glanceId)
         }
     }

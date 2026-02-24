@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">WeatherAppWithWidget</string>
-    <string name="widget_description">Hava durumu widget 1</string>
+    <string name="app_name">GAWeatherWidget</string>
+    <string name="widget_description">Weather Widget State 1</string>
 </resources>

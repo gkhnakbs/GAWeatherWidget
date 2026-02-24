@@ -36,6 +36,7 @@ import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import androidx.glance.color.ColorProvider
+import androidx.glance.layout.size
 import com.gkhnakbs.weatherappwithwidget.MainActivity
 import com.gkhnakbs.weatherappwithwidget.domain.callbacks.RefreshWeatherActionCallback
 import com.gkhnakbs.weatherappwithwidget.domain.model.size.WidgetSize
@@ -74,13 +75,12 @@ class WeatherWidget : GlanceAppWidget() {
                 isLoading = prefs[WeatherWidgetState.isLoading] ?: false,
                 temperature = prefs[WeatherWidgetState.temperature] ?: "--",
                 humidity = prefs[WeatherWidgetState.humidity] ?: "",
-                location = prefs[WeatherWidgetState.location] ?: "Yükleniyor...",
+                location = prefs[WeatherWidgetState.location] ?: "Loading...",
                 apparentTemperature = prefs[WeatherWidgetState.apparentTemperature] ?: "",
                 lastUpdate = prefs[WeatherWidgetState.lastUpdate] ?: ""
             )
 
             if (uiState.isLoading) {
-                // Yükleniyorsa, boyuttan bağımsız olarak ortada bir indicator göster
                 Box(
                     modifier = GlanceModifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
@@ -122,7 +122,6 @@ fun WeatherLarge(
             modifier = GlanceModifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Üst kısım: Şehir adı ve refresh butonu
             Row(
                 modifier = GlanceModifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -139,7 +138,6 @@ fun WeatherLarge(
 
                 Spacer(modifier = GlanceModifier.width(8.dp))
 
-                // Refresh butonu
                 Text(
                     text = "🔄",
                     style = TextStyle(
@@ -153,7 +151,6 @@ fun WeatherLarge(
 
             Spacer(modifier = GlanceModifier.height(12.dp))
 
-            // Ana sıcaklık
             Text(
                 text = uiState.temperature,
                 style = TextStyle(
@@ -165,7 +162,6 @@ fun WeatherLarge(
 
             Spacer(modifier = GlanceModifier.height(4.dp))
 
-            // Hissedilen sıcaklık
             if (uiState.apparentTemperature.isNotEmpty()) {
                 Text(
                     text = uiState.apparentTemperature,
@@ -178,14 +174,13 @@ fun WeatherLarge(
 
             Spacer(modifier = GlanceModifier.height(12.dp))
 
-            // Nem
             if (uiState.humidity.isNotEmpty()) {
                 Row(
                     modifier = GlanceModifier.fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = "💧 Nem: ${uiState.humidity}",
+                        text = "💧 Humidity: ${uiState.humidity}",
                         style = TextStyle(
                             fontSize = 14.sp,
                             color = ColorProvider(day = Color.White, night = Color.White)
@@ -196,7 +191,6 @@ fun WeatherLarge(
 
             Spacer(modifier = GlanceModifier.height(8.dp))
 
-            // Son güncelleme
             if (uiState.lastUpdate.isNotEmpty()) {
                 Text(
                     text = uiState.lastUpdate,
@@ -232,7 +226,6 @@ fun WeatherMedium(
             modifier = GlanceModifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Üst kısım: Şehir adı ve refresh butonu
             Row(
                 modifier = GlanceModifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -249,7 +242,6 @@ fun WeatherMedium(
 
                 Spacer(modifier = GlanceModifier.width(6.dp))
 
-                // Refresh butonu
                 Text(
                     text = "🔄",
                     style = TextStyle(
@@ -257,13 +249,13 @@ fun WeatherMedium(
                         color = ColorProvider(day = Color.White, night = Color.White)
                     ),
                     modifier = GlanceModifier
+                        .size(40.dp)
                         .clickable(actionRunCallback<RefreshWeatherActionCallback>())
                 )
             }
 
             Spacer(modifier = GlanceModifier.height(8.dp))
 
-            // Ana sıcaklık
             Text(
                 text = uiState.temperature,
                 style = TextStyle(
@@ -275,7 +267,6 @@ fun WeatherMedium(
 
             Spacer(modifier = GlanceModifier.height(8.dp))
 
-            // Nem
             if (uiState.humidity.isNotEmpty()) {
                 Text(
                     text = "💧 ${uiState.humidity}",
@@ -311,7 +302,6 @@ fun WeatherSmall(
             modifier = GlanceModifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Sadece sıcaklık - küçük widget için
             Text(
                 text = uiState.temperature,
                 style = TextStyle(
@@ -323,7 +313,6 @@ fun WeatherSmall(
 
             Spacer(modifier = GlanceModifier.height(4.dp))
 
-            // Şehir adı (kısaltılmış)
             Text(
                 text = uiState.location.take(8),
                 style = TextStyle(

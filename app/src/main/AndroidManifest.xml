@@ -9,13 +9,12 @@
         android:name=".presentation.app.WeatherApp"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_launcher_cloudy"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_launcher_cloudy_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.WeatherAppWithWidget">
 
-        <!-- WorkManager'ın otomatik başlatılmasını devre dışı bırak -->
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"
@@ -42,7 +41,7 @@
         <receiver
             android:name=".domain.receivers.WeatherWidgetReceiver"
             android:exported="true"
-            android:label="Hava Durumu Widget'ı"> <intent-filter>
+            android:label="@string/widget_description"> <intent-filter>
             <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
         </intent-filter>
 
