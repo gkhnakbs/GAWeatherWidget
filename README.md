@@ -1,6 +1,6 @@
 <div align="center">
 
-  <img src="app/ic_launcher_cloudy-playstore.png" alt="Weather App Logo" width="120" />
+  <img src="app/src/main/res/mipmap-xxxhdpi/ic_launcher_cloudy.webp" alt="Weather App Logo" width="120" />
 
   <h1>Weather App with Widget</h1>
 
